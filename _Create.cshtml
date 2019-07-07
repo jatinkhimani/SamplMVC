@@ -1,0 +1,107 @@
+﻿@using AppCustomer.DataAccess
+@model Customer
+
+@using (Ajax.BeginForm("Create", new AjaxOptions() { HttpMethod = "POST", OnSuccess = "Saved", OnFailure = "Failed" }))
+{
+<div class="modal fade" tabindex="-1" id="EntityModal" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create Customer</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row form-group">
+                    @Html.Label("Name", new { @class = "col-md-4 control-label" })
+                    <div class="col-md-4">
+                        @Html.TextBoxFor(f => f.CustomerName, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="row form-group">
+                    @Html.Label("ContactNumber", new { @class = "col-md-4 control-label" })
+                    <div class="col-md-4">
+                        @Html.TextBoxFor(f => f.ContactNumber, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="row form-group">
+                    @Html.Label("Address", new { @class = "col-md-4 control-label" })
+                    <div class="col-md-4">
+                        @Html.TextBoxFor(f => f.Address, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="row form-group">
+                    @Html.Label("Gender", new { @class = "col-md-4 control-label" })
+                    <div class="col-md-8">
+                       Male @Html.RadioButtonFor(f => f.Gender, "Male")
+                       Female  @Html.RadioButtonFor(f => f.Gender, "Female")
+
+
+                    </div>
+                </div>
+                <div class="row form-group">
+                    @Html.Label("Registration Date", new { @class = "col-md-4 control-label" })
+                    <div class="col-md-4">
+                        @Html.TextBox("RegDate","", new { @class = "datePicker form-control" })
+                    </div>
+                </div>
+                <div class="row form-group">
+                    @Html.Label("EmailId", new { @class = "col-md-4 control-label" })
+                    <div class="col-md-4">
+                        @Html.TextBoxFor(f => f.EmailId, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="row form-group">
+                    @Html.Label("CutomerType", new { @class = "col-md-4 control-label" })
+                    <div class="col-md-4">
+                        @Html.DropDownListFor(f => f.CustomerType,
+                       (SelectList)ViewBag.empTypes,
+                       "Select", new
+                       {
+                           @class = "form-control"
+                       })
+                    </div>
+                </div>
+                <div class="row form-group">
+                    @Html.Label("Country", new { @class = "col-md-4 control-label" })
+                    <div class="col-md-4">
+                        @Html.DropDownListFor(f => f.City.State.CountryId,
+                       (SelectList)ViewBag.Countries,
+                       "Select", new
+                       {
+                           onchange = "getStates(this," + Html.IdFor(f => f.City.StateId) + "," + Html.IdFor(f => f.CityId) + ")",
+                           @class = "form-control"
+                       })
+                    </div>
+                </div>
+                <div class="row form-group">
+                    @Html.Label("State", new { @class = "col-md-4 control-label" })
+                    <div class="col-md-4">
+                        @Html.DropDownListFor(f => f.City.StateId,
+                       (SelectList)ViewBag.States,
+                       "Select", new
+                       {
+                           onchange = "getCities(this," + Html.IdFor(f => f.CityId) + ")",
+                           @class = "form-control"
+                       })
+                    </div>
+                </div>
+                <div class="row form-group">
+                    @Html.Label("City", new { @class = "col-md-4 control-label" })
+                    <div class="col-md-4">
+                        @Html.DropDownListFor(f => f.CityId,
+                       (SelectList)ViewBag.Cities,
+                       "Select", new
+                       {
+                           @class = "form-control"
+                       })
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" type="submit">Save</button>
+                <button class="btn btn-default" type="button" data-dismiss="modal">Cancel</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+}

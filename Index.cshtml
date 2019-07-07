@@ -1,0 +1,63 @@
+﻿@using AppCustomer.DataAccess
+@model IEnumerable<Customer>
+
+<div id="EntityData">
+    @Html.Partial("_CustomerList")
+</div>
+<div>
+    @Ajax.ActionLink("Create", "Create", null,
+        new AjaxOptions()
+        {
+            HttpMethod="GET",
+            UpdateTargetId="EntityContainer",
+            InsertionMode=InsertionMode.Replace,
+            OnComplete="ShowModal"
+        },new { @class="btn btn-default"})
+</div>
+<div id="EntityContainer">
+
+</div>
+
+@section scripts{
+    
+    <script type="text/javascript">
+        var indexUrl = '@Url.Action("Index")';
+        var stateUrl='@Url.Action("GetStatesByCountryId","State")/'
+        var cityUrl = '@Url.Action("GetCitiesByStateId","City")/';
+
+        function getStates(ele,stateId,cityId) {
+            var item = "<option val=''>Select</option>";
+            $(cityId).html(item);
+
+            var countryId = $(ele).val();
+            $.ajax({
+                url: stateUrl + countryId,
+                cache: false,
+                dataType: 'json',
+                success: function (data) {
+                    var items = "<option value=''>Select</option>";
+                    $.each(data.States, function (i,item) {
+                        items += "<option value=" + item.StateId + ">" + item.StateName + "</option>";
+                    })
+                    $(stateId).html(items);
+                }
+            })
+        }
+
+        function getCities(ele, cityId) {
+            var stateId = $(ele).val();
+            $.ajax({
+                url: cityUrl + stateId,
+                cache: false,
+                dataType: 'json',
+                success: function (data) {
+                    var items = "<option value=''>Select</option>";
+                    $.each(data.Cities, function (i, item) {
+                        items += "<option value=" + item.CityId + ">" + item.CityName + "</option>";
+                    })
+                    $(cityId).html(items);
+                }
+            })
+        }
+    </script>
+    }

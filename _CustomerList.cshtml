@@ -1,0 +1,75 @@
+﻿@using AppCustomer.DataAccess
+@model IEnumerable<Customer>
+
+<table class="table table-bordered">
+    <thead>
+        <tr class="success">
+            <td>Logo</td>
+            <td>Name</td>
+            <td>Contact</td>
+            <td>Address</td>
+            <td>Gender</td>
+            <td>Reg Date</td>
+            <td>Actions</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                @if (string.IsNullOrEmpty(item.Logo))
+                {
+                    <td>
+                        @Ajax.ActionLink("Upload", "Upload", new { id = item.CustomerId },
+                       new AjaxOptions()
+                       {
+                           HttpMethod="GET",
+                           OnComplete="ShowModal",
+                           UpdateTargetId="EntityContainer",
+                           InsertionMode=InsertionMode.Replace
+                       })
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        @Ajax.ActionLink("Upload", "Upload", new { id = item.CustomerId },
+                       new AjaxOptions()
+                       {
+                           HttpMethod = "GET",
+                           OnComplete = "ShowModal",
+                           UpdateTargetId = "EntityContainer",
+                           InsertionMode = InsertionMode.Replace
+                       })
+                        <img src="@Url.Content("~/Images/Customers/"+item.Logo)" style="height:100Px;width:100px;" />
+                </td>
+                }
+                
+                <td>@item.CustomerName</td>
+                <td>@item.ContactNumber</td>
+                <td>@item.Address</td>
+                <td>@item.Gender</td>
+                <td>@item.RegDate</td>
+                <td>
+                    @Ajax.ActionLink("Edit", "Edit", new { id = item.CustomerId },
+                   new AjaxOptions()
+                   {
+                       HttpMethod = "GET",
+                       InsertionMode = InsertionMode.Replace,
+                       OnComplete = "ShowModal",
+                       UpdateTargetId = "EntityContainer"
+                   })
+                    |
+                    @Ajax.ActionLink("Delete", "Delete", new { id = item.CustomerId },
+                   new AjaxOptions()
+                   {
+                       HttpMethod = "GET",
+                       InsertionMode = InsertionMode.Replace,
+                       OnComplete = "ShowModal",
+                       UpdateTargetId = "EntityContainer"
+                   })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

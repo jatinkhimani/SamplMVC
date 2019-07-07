@@ -1,0 +1,71 @@
+﻿@using AppCustomer.DataAccess
+@model Customer
+
+@using (Ajax.BeginForm("Delete", new { id = Model.CustomerId }, new AjaxOptions() { HttpMethod = "POST", OnSuccess = "Saved", OnFailure = "Failed" }))
+{
+<div class="modal fade" tabindex="-1" id="EntityModal" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Delete Customer</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row form-group">
+                    @Html.Label("Name", new { @class = "col-md-4 control-label" })
+                    <div class="col-md-4">
+                        @Html.DisplayTextFor(f => f.CustomerName)
+                    </div>
+                </div>
+                <div class="row form-group">
+                    @Html.Label("ContactNumber", new { @class = "col-md-4 control-label" })
+                    <div class="col-md-4">
+                        @Html.DisplayTextFor(f => f.ContactNumber)
+                    </div>
+                </div>
+                <div class="row form-group">
+                    @Html.Label("Address", new { @class = "col-md-4 control-label" })
+                    <div class="col-md-4">
+                        @Html.DisplayTextFor(f => f.Address)
+                    </div>
+                </div>
+                <div class="row form-group">
+                    @Html.Label("Gender", new { @class = "col-md-4 control-label" })
+                    <div class="col-md-4">
+                        @Html.DisplayTextFor(f => f.Gender)
+
+                    </div>
+                </div>
+                <div class="row form-group">
+                    @Html.Label("Registration Date", new { @class = "col-md-4 control-label" })
+                    <div class="col-md-4">
+                        @Html.DisplayTextFor(f=>f.RegDate)
+                    </div>
+                </div>
+                <div class="row form-group">
+                    @Html.Label("Country", new { @class = "col-md-4 control-label" })
+                    <div class="col-md-4">
+                        @Html.DisplayTextFor(f => f.City.State.Country.CountryName)
+                    </div>
+                </div>
+                <div class="row form-group">
+                    @Html.Label("State", new { @class = "col-md-4 control-label" })
+                    <div class="col-md-4">
+                        @Html.DisplayTextFor(f => f.City.State.StateName)
+                    </div>
+                </div>
+                <div class="row form-group">
+                    @Html.Label("City", new { @class = "col-md-4 control-label" })
+                    <div class="col-md-4">
+                        @Html.DisplayTextFor(f => f.City.CityName)
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger" type="submit">Delete</button>
+                <button class="btn btn-default" type="button" data-dismiss="modal">Cancel</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+}
