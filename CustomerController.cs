@@ -60,7 +60,7 @@ namespace AppCustomer.Controllers
             }
         }
 
-        private void FillViewBags()
+        private void FillViewBags(int countryId=0, int stateId=0)
         {
             var enumValues = Enum.GetValues(typeof(GeneralUtil.CutomerTypes)).Cast<GeneralUtil.CutomerTypes>().ToList();
             List<KeyValuePair<string, int>> empTypes = new List<KeyValuePair<string, int>>();
@@ -70,8 +70,26 @@ namespace AppCustomer.Controllers
             }
             ViewBag.empTypes = new SelectList(empTypes, "Value", "Key");
             ViewBag.Countries = new SelectList(_iCountryRepo.GetAllCountries(), "CountryId", "CountryName");
-            ViewBag.States = new SelectList(new List<State>(), "StateId", "StateName");
-            ViewBag.Cities = new SelectList(new List<City>(), "CityId", "CityName");
+            if (countryId == 0)
+            {
+                ViewBag.States = new SelectList(new List<State>(), "StateId", "StateName");
+            }
+            else
+            {
+                var states = _iStateRepo.GetStates(countryId);
+                ViewBag.States = new SelectList((IEnumerable<object>)states, "StateId", "StateName");
+            }
+
+            if (stateId == 0)
+            {
+                ViewBag.Cities = new SelectList(new List<City>(), "CityId", "CityName");
+            }
+            else
+            {
+                var cities = _iCityRepo.GetCities(stateId);
+                ViewBag.Cities = new SelectList((IEnumerable<object>)cities, "CityId", "CityName");
+            }
+            
         }
 
         // GET: Customer/Edit/5
@@ -79,8 +97,8 @@ namespace AppCustomer.Controllers
         {
             if (id != 0)
             {
-                FillViewBags();
                 var customer = _iCustomerRepo.FindCustomer(id);
+                FillViewBags(customer.City.State.CountryId, customer.City.StateId);
                 return PartialView("_Edit", customer);
             }
             else
